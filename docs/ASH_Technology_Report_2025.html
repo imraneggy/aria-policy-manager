@@ -1,0 +1,1776 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ali &amp; Sons Holding — AI Security Platform Technology Report 2025</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&family=Inter:wght@300;400;500;600;700&display=swap');
+
+/* ── RESET ── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --ink: #0a1628;
+  --ink-2: #152742;
+  --ink-3: #1e3a5f;
+  --paper: #f8fafc;
+  --paper-2: #f0f4f8;
+  --paper-3: #e2e8f0;
+  --emerald: #059669;
+  --emerald-light: #10b981;
+  --emerald-dim: rgba(5,150,105,0.08);
+  --gold: #b45309;
+  --gold-light: #d97706;
+  --gold-dim: rgba(180,83,9,0.07);
+  --sapphire: #1d4ed8;
+  --sapphire-light: #3b82f6;
+  --sapphire-dim: rgba(29,78,216,0.06);
+  --danger: #dc2626;
+  --danger-dim: rgba(220,38,38,0.06);
+  --cyan: #0891b2;
+  --cyan-dim: rgba(8,145,178,0.06);
+  --text: #1e293b;
+  --text-2: #475569;
+  --text-3: #94a3b8;
+  --border: #e2e8f0;
+  --border-2: #cbd5e1;
+  --radius: 8px;
+  --radius-lg: 12px;
+  --shadow-sm: 0 1px 3px rgba(0,0,0,0.06);
+  --shadow: 0 4px 16px rgba(0,0,0,0.06);
+  --shadow-lg: 0 8px 32px rgba(0,0,0,0.08);
+  --font: 'Plus Jakarta Sans', 'Inter', -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', 'SF Mono', monospace;
+}
+
+html { font-size: 15px; scroll-behavior: smooth; }
+body {
+  font-family: var(--font);
+  color: var(--text);
+  background: var(--paper);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── PRINT ── */
+@media print {
+  body { font-size: 11pt; background: white; }
+  .no-print { display: none !important; }
+  .page-break { page-break-before: always; }
+  section { page-break-inside: avoid; }
+  .cover { min-height: 100vh; }
+}
+
+/* ── COVER PAGE ── */
+.cover {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  background: linear-gradient(160deg, #0a1628 0%, #1e3a5f 40%, #0f766e 100%);
+  color: white;
+  padding: 60px 40px;
+  position: relative;
+  overflow: hidden;
+}
+.cover::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(ellipse 600px 400px at 20% 80%, rgba(16,185,129,0.15), transparent),
+    radial-gradient(ellipse 500px 500px at 80% 20%, rgba(59,130,246,0.1), transparent);
+  pointer-events: none;
+}
+.cover-logo {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(20px);
+  border: 2px solid rgba(255,255,255,0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 40px;
+  position: relative;
+  z-index: 1;
+}
+.cover-logo svg { width: 60px; height: 60px; fill: white; opacity: 0.9; }
+.cover h1 {
+  font-size: 3rem;
+  font-weight: 800;
+  letter-spacing: -1.5px;
+  line-height: 1.15;
+  margin-bottom: 12px;
+  position: relative;
+  z-index: 1;
+}
+.cover h1 span { color: #6ee7b7; }
+.cover .subtitle {
+  font-size: 1.15rem;
+  font-weight: 400;
+  opacity: 0.75;
+  max-width: 600px;
+  margin-bottom: 48px;
+  position: relative;
+  z-index: 1;
+}
+.cover-meta {
+  display: flex;
+  gap: 32px;
+  font-size: 0.82rem;
+  opacity: 0.6;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  position: relative;
+  z-index: 1;
+}
+.cover-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: 100px;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.15);
+  margin: 4px;
+  position: relative;
+  z-index: 1;
+}
+.cover-badges { margin-bottom: 40px; display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+
+/* ── LAYOUT ── */
+.container {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 0 40px;
+}
+.section-page {
+  padding: 80px 0;
+}
+.section-page + .section-page {
+  border-top: 1px solid var(--border);
+}
+
+/* ── TYPOGRAPHY ── */
+h2 {
+  font-size: 2rem;
+  font-weight: 800;
+  letter-spacing: -0.8px;
+  color: var(--ink);
+  margin-bottom: 8px;
+}
+h2 .accent { color: var(--emerald); }
+h3 {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--ink);
+  margin-bottom: 6px;
+  margin-top: 32px;
+}
+h4 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--ink-2);
+  margin-bottom: 4px;
+  margin-top: 20px;
+}
+.section-lead {
+  font-size: 1.05rem;
+  color: var(--text-2);
+  max-width: 720px;
+  margin-bottom: 40px;
+}
+p { margin-bottom: 12px; }
+
+/* ── TAGS ── */
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 100px;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+}
+.tag-emerald { background: var(--emerald-dim); color: var(--emerald); }
+.tag-gold { background: var(--gold-dim); color: var(--gold); }
+.tag-sapphire { background: var(--sapphire-dim); color: var(--sapphire); }
+.tag-danger { background: var(--danger-dim); color: var(--danger); }
+.tag-cyan { background: var(--cyan-dim); color: var(--cyan); }
+
+/* ── PROJECT CARDS ── */
+.project-cards {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin: 32px 0;
+}
+.project-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-sm);
+  position: relative;
+  overflow: hidden;
+}
+.project-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+}
+.project-card.aria::before { background: linear-gradient(90deg, var(--emerald), var(--sapphire-light)); }
+.project-card.cyber::before { background: linear-gradient(90deg, var(--cyan), var(--gold-light)); }
+.project-card h3 { margin-top: 0; font-size: 1.15rem; }
+.project-card p { font-size: 0.9rem; color: var(--text-2); }
+.project-card .tags { margin-top: 12px; display: flex; flex-wrap: wrap; gap: 4px; }
+
+/* ── TABLES ── */
+.tech-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 20px 0 32px;
+  font-size: 0.88rem;
+}
+.tech-table thead th {
+  text-align: left;
+  padding: 10px 14px;
+  background: var(--ink);
+  color: white;
+  font-weight: 600;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.tech-table thead th:first-child { border-radius: var(--radius) 0 0 0; }
+.tech-table thead th:last-child { border-radius: 0 var(--radius) 0 0; }
+.tech-table tbody td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+.tech-table tbody tr:hover { background: var(--paper-2); }
+.tech-table .mono { font-family: var(--mono); font-size: 0.82rem; color: var(--sapphire); }
+.tech-table .purpose { color: var(--text-2); }
+
+/* ── ARCHITECTURE DIAGRAMS ── */
+.arch-box {
+  background: var(--ink);
+  border-radius: var(--radius-lg);
+  padding: 32px;
+  margin: 24px 0;
+  overflow-x: auto;
+}
+.arch-box pre {
+  font-family: var(--mono);
+  font-size: 0.78rem;
+  line-height: 1.6;
+  color: #94a3b8;
+  white-space: pre;
+  margin: 0;
+}
+.arch-box pre .hl { color: #6ee7b7; }
+.arch-box pre .hl2 { color: #93c5fd; }
+.arch-box pre .hl3 { color: #fbbf24; }
+
+/* ── WORKFLOW STEPS ── */
+.steps {
+  counter-reset: step;
+  margin: 24px 0;
+}
+.step {
+  display: flex;
+  gap: 20px;
+  padding: 20px 0;
+  border-bottom: 1px solid var(--border);
+}
+.step:last-child { border-bottom: none; }
+.step::before {
+  counter-increment: step;
+  content: counter(step);
+  flex-shrink: 0;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--emerald);
+  color: white;
+  font-weight: 700;
+  font-size: 0.88rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.step-content h4 { margin-top: 0; font-size: 0.95rem; }
+.step-content p { font-size: 0.88rem; color: var(--text-2); margin-bottom: 0; }
+.step-content code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  background: var(--paper-2);
+  padding: 1px 6px;
+  border-radius: 4px;
+  color: var(--sapphire);
+}
+
+/* ── AGENT PIPELINE ── */
+.pipeline {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin: 16px 0 24px;
+}
+.pipeline-node {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  font-size: 0.82rem;
+  font-weight: 600;
+  background: white;
+  border: 1px solid var(--border);
+  box-shadow: var(--shadow-sm);
+}
+.pipeline-arrow { color: var(--text-3); font-size: 1.2rem; }
+
+/* ── VALUE CARDS ── */
+.value-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin: 24px 0;
+}
+.value-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  text-align: center;
+  box-shadow: var(--shadow-sm);
+}
+.value-card .number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--emerald);
+  line-height: 1;
+  margin-bottom: 4px;
+}
+.value-card .label {
+  font-size: 0.78rem;
+  color: var(--text-2);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
+}
+
+/* ── COMPARISON TABLE ── */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 200px 1fr 1fr;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  margin: 24px 0;
+  font-size: 0.88rem;
+}
+.compare-grid .ch {
+  background: var(--ink);
+  color: white;
+  padding: 12px 16px;
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+.compare-grid .cr {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+}
+.compare-grid .cr:nth-child(6n+4),
+.compare-grid .cr:nth-child(6n+5),
+.compare-grid .cr:nth-child(6n+6) { background: var(--paper-2); }
+.compare-grid .label-cell { font-weight: 600; color: var(--ink); }
+
+/* ── IMPROVEMENT CARDS ── */
+.improve-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  margin: 24px 0;
+}
+.improve-card {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+  box-shadow: var(--shadow-sm);
+}
+.improve-card .priority {
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 6px;
+}
+.improve-card .priority.p0 { color: var(--danger); }
+.improve-card .priority.p1 { color: var(--gold); }
+.improve-card .priority.p2 { color: var(--sapphire); }
+.improve-card .priority.p3 { color: var(--text-3); }
+.improve-card h4 { margin-top: 0; }
+.improve-card p { font-size: 0.85rem; color: var(--text-2); margin-bottom: 0; }
+
+/* ── TOC ── */
+.toc {
+  background: white;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  padding: 28px 32px;
+  margin: 40px 0;
+  box-shadow: var(--shadow-sm);
+}
+.toc h3 { margin-top: 0; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; color: var(--text-3); margin-bottom: 16px; }
+.toc-list { list-style: none; }
+.toc-list li {
+  padding: 6px 0;
+  border-bottom: 1px dashed var(--border);
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.92rem;
+}
+.toc-list li:last-child { border-bottom: none; }
+.toc-list li a { color: var(--text); text-decoration: none; font-weight: 500; }
+.toc-list li a:hover { color: var(--emerald); }
+.toc-list .num { color: var(--text-3); font-family: var(--mono); font-size: 0.8rem; }
+
+/* ── NAV ── */
+.nav-bar {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: rgba(248,250,252,0.92);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+}
+.nav-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 52px;
+}
+.nav-brand { font-weight: 700; font-size: 0.88rem; color: var(--ink); display: flex; align-items: center; gap: 8px; }
+.nav-brand svg { width: 22px; height: 22px; fill: var(--emerald); }
+.nav-links { display: flex; gap: 4px; }
+.nav-links a {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--text-2);
+  text-decoration: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  transition: all 0.15s;
+}
+.nav-links a:hover { background: var(--emerald-dim); color: var(--emerald); }
+
+/* ── FOOTER ── */
+.footer {
+  background: var(--ink);
+  color: rgba(255,255,255,0.5);
+  padding: 40px;
+  text-align: center;
+  font-size: 0.82rem;
+}
+.footer strong { color: rgba(255,255,255,0.8); }
+
+/* ── CODE BLOCKS ── */
+.code-block {
+  background: #1e293b;
+  border-radius: var(--radius);
+  padding: 16px 20px;
+  margin: 12px 0;
+  overflow-x: auto;
+}
+.code-block code {
+  font-family: var(--mono);
+  font-size: 0.8rem;
+  color: #e2e8f0;
+  line-height: 1.6;
+}
+.code-block .cm { color: #64748b; }
+.code-block .kw { color: #7dd3fc; }
+.code-block .str { color: #86efac; }
+.code-block .fn { color: #c4b5fd; }
+
+/* ── CALLOUT ── */
+.callout {
+  padding: 16px 20px;
+  border-radius: var(--radius);
+  margin: 16px 0;
+  font-size: 0.88rem;
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+}
+.callout-emerald { background: var(--emerald-dim); border-left: 3px solid var(--emerald); }
+.callout-gold { background: var(--gold-dim); border-left: 3px solid var(--gold); }
+.callout-sapphire { background: var(--sapphire-dim); border-left: 3px solid var(--sapphire); }
+
+/* ── RESPONSIVE ── */
+@media (max-width: 768px) {
+  .container { padding: 0 20px; }
+  .project-cards, .improve-grid, .value-grid { grid-template-columns: 1fr; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .compare-grid .ch:first-child { display: none; }
+  h2 { font-size: 1.6rem; }
+  .cover h1 { font-size: 2rem; }
+  .nav-links { display: none; }
+}
+
+/* ── SECTION DIVIDER ── */
+.section-divider {
+  text-align: center;
+  padding: 48px 0 0;
+}
+.section-divider .project-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 24px;
+  border-radius: 100px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+}
+.section-divider .project-label.aria-label {
+  background: var(--emerald-dim);
+  color: var(--emerald);
+  border: 1px solid rgba(5,150,105,0.2);
+}
+.section-divider .project-label.cyber-label {
+  background: var(--cyan-dim);
+  color: var(--cyan);
+  border: 1px solid rgba(8,145,178,0.2);
+}
+
+/* ── INLINE LIST ── */
+.feature-list {
+  list-style: none;
+  margin: 12px 0;
+}
+.feature-list li {
+  padding: 6px 0;
+  padding-left: 20px;
+  position: relative;
+  font-size: 0.9rem;
+  color: var(--text-2);
+}
+.feature-list li::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 13px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--emerald);
+}
+
+.two-col {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin: 24px 0;
+}
+@media (max-width: 768px) { .two-col { grid-template-columns: 1fr; } }
+</style>
+</head>
+<body>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- COVER PAGE                                  -->
+<!-- ════════════════════════════════════════════ -->
+<div class="cover">
+  <div class="cover-logo">
+    <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2zm0 2.18L19.83 8 12 11.82 4.17 8 12 4.18zM4 9.44l7 3.5v7.62l-7-3.5V9.44zm10 11.12v-7.62l7-3.5v7.62l-7 3.5z"/></svg>
+  </div>
+  <h1>AI Security Platform<br><span>Technology Report</span></h1>
+  <p class="subtitle">
+    Architecture, technology stack, implementation methodology, and strategic roadmap
+    for the DIH IT Security Division's AI-powered security platforms.
+  </p>
+  <div class="cover-badges">
+    <span class="cover-badge">UAE NESA</span>
+    <span class="cover-badge">ISO 27001:2022</span>
+    <span class="cover-badge">UAE PDPL</span>
+    <span class="cover-badge">NIST CSF 2.0</span>
+    <span class="cover-badge">CIS v8</span>
+    <span class="cover-badge">ADDA</span>
+  </div>
+  <div class="cover-meta">
+    <span>Ali &amp; Sons Holding</span>
+    <span>DIH IT Security Division</span>
+    <span>Abu Dhabi, UAE</span>
+    <span>March 2025</span>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- NAVIGATION                                  -->
+<!-- ════════════════════════════════════════════ -->
+<nav class="nav-bar no-print">
+  <div class="nav-inner">
+    <div class="nav-brand">
+      <svg viewBox="0 0 24 24"><path d="M12 2L2 7v10l10 5 10-5V7L12 2z"/></svg>
+      ASH Technology Report
+    </div>
+    <div class="nav-links">
+      <a href="#overview">Overview</a>
+      <a href="#aria">ARIA</a>
+      <a href="#cyberdash">CyberDash</a>
+      <a href="#stack">Tech Stack</a>
+      <a href="#implementation">Implementation</a>
+      <a href="#roadmap">Roadmap</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- TABLE OF CONTENTS                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="section-page" id="overview">
+<div class="container">
+
+  <h2>Executive <span class="accent">Overview</span></h2>
+  <p class="section-lead">
+    The DIH IT Security Division operates two complementary AI-powered platforms that together provide
+    end-to-end cybersecurity governance — from policy lifecycle management to real-time threat intelligence
+    — at <strong>$0 cloud LLM cost</strong> through 100% local AI processing.
+  </p>
+
+  <div class="project-cards">
+    <div class="project-card aria">
+      <h3>ARIA &mdash; AI IT Policy Manager</h3>
+      <p>
+        Enterprise GRC governance platform with multi-agent RAG. Automates IT policy generation,
+        compliance review against 7 frameworks, and 24/7 regulatory monitoring.
+        Air-gapped, local-first architecture ensuring zero data leakage.
+      </p>
+      <div class="tags">
+        <span class="tag tag-emerald">FastAPI</span>
+        <span class="tag tag-emerald">Next.js 16</span>
+        <span class="tag tag-emerald">LangChain</span>
+        <span class="tag tag-emerald">ChromaDB</span>
+        <span class="tag tag-emerald">Ollama</span>
+      </div>
+    </div>
+    <div class="project-card cyber">
+      <h3>AI Cybersecurity Intelligence Dashboard</h3>
+      <p>
+        Executive cyber intelligence platform delivering daily automated briefings
+        to C-suite leadership. Ingests, curates, AI-drafts, and publishes threat intelligence
+        with GeoPulse 3D threat atlas and Telegram operations workflow.
+      </p>
+      <div class="tags">
+        <span class="tag tag-cyan">Flask 3.0</span>
+        <span class="tag tag-cyan">React 18</span>
+        <span class="tag tag-cyan">PostgreSQL</span>
+        <span class="tag tag-cyan">Redis</span>
+        <span class="tag tag-cyan">Docker</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="number">$0</div>
+      <div class="label">Cloud LLM Cost</div>
+    </div>
+    <div class="value-card">
+      <div class="number">7</div>
+      <div class="label">Compliance Frameworks</div>
+    </div>
+    <div class="value-card">
+      <div class="number">8</div>
+      <div class="label">AI Agents Total</div>
+    </div>
+    <div class="value-card">
+      <div class="number">25+</div>
+      <div class="label">Corporate Policies Managed</div>
+    </div>
+    <div class="value-card">
+      <div class="number">24/7</div>
+      <div class="label">Autonomous Monitoring</div>
+    </div>
+    <div class="value-card">
+      <div class="number">100%</div>
+      <div class="label">Data Sovereignty</div>
+    </div>
+  </div>
+
+  <div class="toc">
+    <h3>Table of Contents</h3>
+    <ul class="toc-list">
+      <li><a href="#overview">Executive Overview</a> <span class="num">01</span></li>
+      <li><a href="#aria">Project 1: ARIA &mdash; AI IT Policy Manager</a> <span class="num">02</span></li>
+      <li><a href="#aria-arch">ARIA Architecture &amp; Agent Pipeline</a> <span class="num">03</span></li>
+      <li><a href="#aria-stack">ARIA Technology Stack &amp; Justifications</a> <span class="num">04</span></li>
+      <li><a href="#cyberdash">Project 2: AI Cybersecurity Intelligence Dashboard</a> <span class="num">05</span></li>
+      <li><a href="#cyber-arch">CyberDash Architecture &amp; Agent Pipeline</a> <span class="num">06</span></li>
+      <li><a href="#cyber-stack">CyberDash Technology Stack &amp; Justifications</a> <span class="num">07</span></li>
+      <li><a href="#stack">Comparative Technology Analysis</a> <span class="num">08</span></li>
+      <li><a href="#implementation">Step-by-Step Implementation Guide</a> <span class="num">09</span></li>
+      <li><a href="#security">Security Architecture &amp; Controls</a> <span class="num">10</span></li>
+      <li><a href="#roadmap">Future Improvements &amp; Strategic Roadmap</a> <span class="num">11</span></li>
+    </ul>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ARIA PROJECT                                -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="aria">
+<div class="container">
+
+  <div class="section-divider">
+    <span class="project-label aria-label">Project 1</span>
+  </div>
+
+  <h2>ARIA &mdash; AI IT <span class="accent">Policy Manager</span></h2>
+  <p class="section-lead">
+    Enterprise-grade GRC governance platform powered by multi-agent RAG. Automates policy
+    generation, compliance auditing, and regulatory monitoring for Ali &amp; Sons Holding.
+  </p>
+
+  <h3>Business Value</h3>
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">Minutes</div>
+      <div class="label">Policy Generation (vs. Weeks)</div>
+    </div>
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">7</div>
+      <div class="label">Compliance Frameworks</div>
+    </div>
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">Air-Gapped</div>
+      <div class="label">Zero Data Leakage</div>
+    </div>
+  </div>
+
+  <h3>Compliance Frameworks Covered</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:6px;margin:12px 0 24px">
+    <span class="tag tag-emerald">UAE NESA Controls</span>
+    <span class="tag tag-emerald">ISO 27001:2022 Annex A</span>
+    <span class="tag tag-sapphire">UAE PDPL (Decree-Law No. 45/2021)</span>
+    <span class="tag tag-sapphire">NIST CSF 2.0</span>
+    <span class="tag tag-gold">CIS Controls v8 (IG 1-3)</span>
+    <span class="tag tag-gold">ADDA IT Governance</span>
+    <span class="tag tag-danger">UAE Cybersecurity Law (Decree-Law No. 2/2021)</span>
+  </div>
+
+  <h3>Key Features</h3>
+  <div class="two-col">
+    <div>
+      <h4>Expert Policy Chat (RAG-Powered)</h4>
+      <ul class="feature-list">
+        <li>Real-time SSE streaming responses from local LLM</li>
+        <li>Top-5 document retrieval from ChromaDB vector store</li>
+        <li>10-exchange conversation history for coherent dialogue</li>
+        <li>Grounded in 25+ corporate policy documents</li>
+      </ul>
+
+      <h4>Policy Generation</h4>
+      <ul class="feature-list">
+        <li>ISO/IEC 27002:2022 structured template output</li>
+        <li>Dual-source: RAG context + live DuckDuckGo web search</li>
+        <li>Parallel web queries with 8-second timeout per search</li>
+        <li>Export to DOCX and PDF with Ali &amp; Sons branding</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Compliance Reviewer</h4>
+      <ul class="feature-list">
+        <li>Structured scorecard: COMPLIANT / PARTIALLY / NON-COMPLIANT</li>
+        <li>Per-framework analysis: NESA, ISO, PDPL, NIST, CIS</li>
+        <li>Critical gaps identification with remediation guidance</li>
+        <li>Approval recommendation: APPROVE / CONDITIONS / REJECT</li>
+      </ul>
+
+      <h4>Autonomous Monitoring Agent</h4>
+      <ul class="feature-list">
+        <li>8 DuckDuckGo regulatory queries every 6 hours</li>
+        <li>3-stage pipeline: Scout &rarr; Fact-Checker &rarr; Summariser</li>
+        <li>LLM-validated content (temperature 0.0 for determinism)</li>
+        <li>Auto-ingestion into ChromaDB knowledge base</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ARIA ARCHITECTURE                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="aria-arch">
+<div class="container">
+
+  <h2>ARIA <span class="accent">Architecture</span></h2>
+  <p class="section-lead">
+    Layered architecture with clear separation between presentation, API, agent orchestration,
+    and data persistence layers.
+  </p>
+
+  <div class="arch-box">
+<pre>
+<span class="hl">ARIA Platform Architecture</span>
+<span class="hl2">═══════════════════════════════════════════════════════════════</span>
+
+  <span class="hl2">┌──────────────────────┐</span>     <span class="hl2">┌───────────────────────────────────┐</span>
+  <span class="hl2">│</span>   <span class="hl">Next.js 16 / React 19</span> <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl">FastAPI + Uvicorn (Async)</span>         <span class="hl2">│</span>
+  <span class="hl2">│</span>   TypeScript 5       <span class="hl2">│</span>     <span class="hl2">│</span>                                   <span class="hl2">│</span>
+  <span class="hl2">│</span>   Tailwind CSS 4     <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">┌───────────────────────────┐</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>                      <span class="hl2">│</span>────▶<span class="hl2">│</span>   <span class="hl3">│</span>  <span class="hl3">Multi-Agent System</span>        <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  Pages:              <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● ARIA Expert (Chat/RAG)  <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Login (JWT)       <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Policy Writer           <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Expert Chat (SSE) <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Compliance Reviewer     <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Policy Generator  <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Autonomous Monitor      <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Admin Settings    <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">└───────────────────────────┘</span>   <span class="hl2">│</span>
+  <span class="hl2">└──────────────────────┘</span>     <span class="hl2">│</span>                                   <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">┌──────────┐</span>  <span class="hl">┌──────────┐</span>    <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">│ ChromaDB │</span>  <span class="hl">│  SQLite  │</span>    <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">│  (RAG)   │</span>  <span class="hl">│ (Users)  │</span>    <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">└────┬─────┘</span>  <span class="hl">└──────────┘</span>    <span class="hl2">│</span>
+                              <span class="hl2">│</span>        <span class="hl">│</span>                          <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl3">┌────┴──────┐</span>                  <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl3">│  Ollama   │</span>                  <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl3">│ Local LLM │</span>                  <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl3">└───────────┘</span>                  <span class="hl2">│</span>
+                              <span class="hl2">└───────────────────────────────────┘</span>
+</pre>
+  </div>
+
+  <h3>Multi-Agent Pipeline</h3>
+
+  <h4>Agent 1: ARIA Master Expert</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--emerald)">User Question</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">ChromaDB (top-5)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">RAG Context + History</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--emerald)">LLM Stream</span>
+  </div>
+
+  <h4>Agent 2: Policy Writer</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--emerald)">Policy Request</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">RAG (top-6) + Web Search (2x)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">ISO/IEC 27002 Template</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--emerald)">Policy Document</span>
+  </div>
+
+  <h4>Agent 3: Compliance Reviewer</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--emerald)">Policy Draft</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">Framework Audit Matrix</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">Compliance Scorecard</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--danger)">Approval Decision</span>
+  </div>
+
+  <h4>Agent 4: Autonomous Monitor (Every 6 Hours)</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--emerald)">8 Scout Queries</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">Fact-Checker (LLM t=0.0)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">Summariser</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--emerald)">ChromaDB Ingestion</span>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ARIA TECH STACK                             -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="aria-stack">
+<div class="container">
+
+  <h2>ARIA <span class="accent">Technology Stack</span></h2>
+  <p class="section-lead">Every technology was selected with specific justification for the platform's requirements.</p>
+
+  <h3>Backend Technologies</h3>
+  <table class="tech-table">
+    <thead>
+      <tr><th>Technology</th><th>Version</th><th>Purpose</th><th>Why This Choice</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">FastAPI</td><td>0.115+</td>
+        <td>Async web framework</td>
+        <td class="purpose">Native async/await support essential for SSE streaming and concurrent agent operations. Auto-generates OpenAPI docs at <code>/docs</code>. 3x faster than Flask for I/O-bound LLM workloads.</td>
+      </tr>
+      <tr>
+        <td class="mono">Uvicorn</td><td>0.34+</td>
+        <td>ASGI server</td>
+        <td class="purpose">Lightning-fast ASGI server with HTTP/2 support. Required for FastAPI's async capabilities. Handles concurrent SSE connections without thread exhaustion.</td>
+      </tr>
+      <tr>
+        <td class="mono">LangChain</td><td>0.3+</td>
+        <td>LLM orchestration</td>
+        <td class="purpose">Provides composable chains for RAG pipeline, prompt templates, and agent orchestration. Abstracts LLM provider switching (Ollama today, Azure tomorrow) without code changes.</td>
+      </tr>
+      <tr>
+        <td class="mono">ChromaDB</td><td>0.5+</td>
+        <td>Vector database</td>
+        <td class="purpose">Lightweight embedded vector DB requiring zero infrastructure. Persistent storage to disk. Perfect for air-gapped deployment &mdash; no cloud dependency. Supports cosine similarity search.</td>
+      </tr>
+      <tr>
+        <td class="mono">Ollama</td><td>latest</td>
+        <td>Local LLM server</td>
+        <td class="purpose">Runs LLMs entirely on-premises. <strong>$0 per-token cost</strong>. Full data sovereignty &mdash; no data leaves the network. Supports model hot-swapping (llama3.2:1b default, scalable to larger models).</td>
+      </tr>
+      <tr>
+        <td class="mono">SQLite</td><td>built-in</td>
+        <td>User authentication DB</td>
+        <td class="purpose">Zero-configuration embedded database. Sufficient for single-admin authentication. Eliminates PostgreSQL dependency for simpler deployment. File-based backup.</td>
+      </tr>
+      <tr>
+        <td class="mono">PyJWT</td><td>latest</td>
+        <td>JWT authentication</td>
+        <td class="purpose">Industry-standard HS256 token generation. 60-minute expiry balances security with usability. Stateless verification reduces database queries on every request.</td>
+      </tr>
+      <tr>
+        <td class="mono">passlib + bcrypt</td><td>latest</td>
+        <td>Password security</td>
+        <td class="purpose">bcrypt with automatic salting and configurable work factor. Constant-time comparison prevents timing attacks. OWASP-recommended password storage.</td>
+      </tr>
+      <tr>
+        <td class="mono">APScheduler</td><td>3.10+</td>
+        <td>Background scheduling</td>
+        <td class="purpose">Runs autonomous monitoring agent every 6 hours. Coalesce mode prevents job pileup. Max 1 concurrent instance prevents duplicate ingestion.</td>
+      </tr>
+      <tr>
+        <td class="mono">python-docx</td><td>1.1+</td>
+        <td>DOCX export</td>
+        <td class="purpose">Generates Microsoft Word documents with proper heading levels, bullet points, and formatting. Required for policy documents that enter formal approval workflows.</td>
+      </tr>
+      <tr>
+        <td class="mono">pdfkit</td><td>1.0+</td>
+        <td>PDF export</td>
+        <td class="purpose">HTML-to-PDF rendering via wkhtmltopdf. Produces print-ready policy documents with Ali &amp; Sons branded headers and IBM Plex Sans typography.</td>
+      </tr>
+      <tr>
+        <td class="mono">DuckDuckGo Search</td><td>6.0+</td>
+        <td>Web search</td>
+        <td class="purpose">No API key required. Privacy-respecting search for regulatory updates. Used by Policy Writer (latest compliance requirements) and Autonomous Monitor (regulatory scanning).</td>
+      </tr>
+      <tr>
+        <td class="mono">Pydantic Settings</td><td>2.0+</td>
+        <td>Configuration</td>
+        <td class="purpose">Type-safe configuration with .env file loading. Validates critical secrets (JWT_SECRET, ADMIN_PASSWORD) at startup. Fails fast on misconfiguration.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Frontend Technologies</h3>
+  <table class="tech-table">
+    <thead>
+      <tr><th>Technology</th><th>Version</th><th>Purpose</th><th>Why This Choice</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">Next.js</td><td>16.1.6</td>
+        <td>React framework</td>
+        <td class="purpose">App Router with SSR/CSR flexibility. API proxy rewrites eliminate CORS complexity. File-based routing reduces boilerplate. Built-in font optimization (Sora, JetBrains Mono).</td>
+      </tr>
+      <tr>
+        <td class="mono">React</td><td>19.2.3</td>
+        <td>UI library</td>
+        <td class="purpose">Latest stable with concurrent features. Component-based architecture for reusable policy cards, chat panels, and compliance views. SSE streaming integration via ReadableStream API.</td>
+      </tr>
+      <tr>
+        <td class="mono">TypeScript</td><td>5</td>
+        <td>Type safety</td>
+        <td class="purpose">Catches errors at compile time. Essential for complex state management (chat history, streaming buffers, policy sections). Self-documenting API contracts.</td>
+      </tr>
+      <tr>
+        <td class="mono">Tailwind CSS</td><td>4</td>
+        <td>Styling</td>
+        <td class="purpose">Utility-first CSS with design tokens via CSS variables. Dark theme with emerald/gold accent system. Zero unused CSS in production build. Responsive without media query boilerplate.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>LLM Configuration</h3>
+  <table class="tech-table">
+    <thead>
+      <tr><th>Parameter</th><th>Value</th><th>Justification</th></tr>
+    </thead>
+    <tbody>
+      <tr><td class="mono">Chat Model</td><td>llama3.2:1b</td><td class="purpose">Smallest model for fast responses (~1-3s). Adequate for policy Q&amp;A when augmented with RAG context. Configurable to larger models for higher quality.</td></tr>
+      <tr><td class="mono">Embeddings</td><td>nomic-embed-text</td><td class="purpose">768-dimension embeddings optimized for retrieval. Runs locally via Ollama. Best-in-class for document similarity at small model size.</td></tr>
+      <tr><td class="mono">Temperature</td><td>0.2 (chat) / 0.0 (monitor)</td><td class="purpose">Low temperature for factual policy responses. Zero temperature for deterministic fact-checking in autonomous monitor.</td></tr>
+      <tr><td class="mono">RAG top-k</td><td>5 (chat) / 6 (writer)</td><td class="purpose">Balanced retrieval: enough context for grounded answers without overwhelming the context window of small models.</td></tr>
+      <tr><td class="mono">Chunk size</td><td>1000 chars / 200 overlap</td><td class="purpose">Optimal for policy documents: captures full clause content. 20% overlap preserves cross-boundary context.</td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- CYBERDASH PROJECT                           -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="cyberdash">
+<div class="container">
+
+  <div class="section-divider">
+    <span class="project-label cyber-label">Project 2</span>
+  </div>
+
+  <h2>AI Cybersecurity <span class="accent">Intelligence Dashboard</span></h2>
+  <p class="section-lead">
+    Local-first executive cyber intelligence platform delivering automated daily briefings
+    to C-suite leadership with AI-powered curation, GeoPulse threat atlas, and Telegram operations workflow.
+  </p>
+
+  <h3>Business Value</h3>
+  <div class="value-grid">
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">Daily</div>
+      <div class="label">Automated C-Suite Briefings</div>
+    </div>
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">30+</div>
+      <div class="label">RSS Intelligence Feeds</div>
+    </div>
+    <div class="value-card">
+      <div class="number" style="font-size:1.4rem">Real-Time</div>
+      <div class="label">GeoPulse Threat Atlas</div>
+    </div>
+  </div>
+
+  <h3>Key Features</h3>
+  <div class="two-col">
+    <div>
+      <h4>Executive Dashboard</h4>
+      <ul class="feature-list">
+        <li>6 KPI snapshot cards with table/image media modes</li>
+        <li>GeoPulse Atlas &mdash; Leaflet-based global threat radar with 42+ locations</li>
+        <li>Live attack command map with real-time Check Point telemetry</li>
+        <li>30-day AI-powered intelligence chat with source attribution</li>
+        <li>Security posture indicator (GREEN/AMBER/RED)</li>
+        <li>Command palette (Ctrl+K) for rapid navigation</li>
+      </ul>
+
+      <h4>Intelligence Ingestion</h4>
+      <ul class="feature-list">
+        <li>30+ RSS feeds scraped daily at 05:45 UAE time</li>
+        <li>Cybersecurity relevance filtering (keyword heuristics)</li>
+        <li>Hash-based deduplication prevents duplicate articles</li>
+        <li>Automatic catch-up fetch if no articles in 20 hours</li>
+      </ul>
+    </div>
+    <div>
+      <h4>Admin Curation Workspace</h4>
+      <ul class="feature-list">
+        <li>Queue management with severity/category filtering</li>
+        <li>One-click AI draft generation and finalization</li>
+        <li>Fact-checking pipeline with source corroboration</li>
+        <li>Dashboard configuration: KPI cards, visibility toggles, headers</li>
+        <li>Daily HTML report generation with 30-day history</li>
+      </ul>
+
+      <h4>Telegram Operations Bot</h4>
+      <ul class="feature-list">
+        <li>Daily morning digest with queue summary at 06:00</li>
+        <li>Inline keyboard for review/approve/edit workflows</li>
+        <li>AI-assisted field editing (summary, remediation, actions)</li>
+        <li>Auto-discovery of chat ID on first message</li>
+        <li>Webhook + polling fallback for reliability</li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- CYBERDASH ARCHITECTURE                      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="cyber-arch">
+<div class="container">
+
+  <h2>CyberDash <span class="accent">Architecture</span></h2>
+
+  <div class="arch-box">
+<pre>
+<span class="hl">AI Cyber Intelligence Platform Architecture</span>
+<span class="hl2">═══════════════════════════════════════════════════════════════</span>
+
+  <span class="hl2">┌──────────────────────┐</span>     <span class="hl2">┌───────────────────────────────────┐</span>
+  <span class="hl2">│</span>   <span class="hl">React 18 SPA</span>        <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl">Flask 3.0 API Server</span>              <span class="hl2">│</span>
+  <span class="hl2">│</span>                      <span class="hl2">│</span>     <span class="hl2">│</span>                                   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● GeoPulse Atlas    <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">┌───────────────────────────┐</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● KPI Dashboard     <span class="hl2">│</span>────▶<span class="hl2">│</span>   <span class="hl3">│</span>  <span class="hl3">AI Subagent Orchestrator</span>   <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Live Attack Map   <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Context Agent          <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Intel Chat        <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Draft Agent             <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Admin Panel       <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Policy Agent            <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● Command Palette   <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Verification Agent      <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">│</span>  ● 3D Splash         <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│</span>  ● Finalize Agent          <span class="hl3">│</span>   <span class="hl2">│</span>
+  <span class="hl2">└──────────────────────┘</span>     <span class="hl2">│</span>   <span class="hl3">└───────────────────────────┘</span>   <span class="hl2">│</span>
+                              <span class="hl2">│</span>                                   <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">┌────────┐ ┌───────┐ ┌────────┐</span> <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">│Postgres│ │ Redis │ │ Ollama │</span> <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">│  15    │ │   7   │ │  LLM   │</span> <span class="hl2">│</span>
+                              <span class="hl2">│</span>   <span class="hl">└────────┘ └───────┘ └────────┘</span> <span class="hl2">│</span>
+                              <span class="hl2">│</span>                                   <span class="hl2">│</span>
+  <span class="hl2">┌──────────────────────┐</span>     <span class="hl2">│</span>   <span class="hl3">┌──────────┐ ┌──────────┐</span>    <span class="hl2">│</span>
+  <span class="hl2">│</span>   <span class="hl3">Telegram Bot</span>       <span class="hl2">│</span>────▶<span class="hl2">│</span>   <span class="hl3">│ Nginx    │ │ n8n      │</span>    <span class="hl2">│</span>
+  <span class="hl2">│</span>   (Ops Workflow)     <span class="hl2">│</span>     <span class="hl2">│</span>   <span class="hl3">│ Proxy    │ │ Workflow │</span>    <span class="hl2">│</span>
+  <span class="hl2">└──────────────────────┘</span>     <span class="hl2">│</span>   <span class="hl3">└──────────┘ └──────────┘</span>    <span class="hl2">│</span>
+                              <span class="hl2">└───────────────────────────────────┘</span>
+</pre>
+  </div>
+
+  <h3>AI Subagent Pipeline</h3>
+
+  <h4>Draft Pipeline (News Intake &rarr; CISO-Ready Summary)</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--cyan)">Context Agent</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">Draft Agent (LLM)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">Policy Agent (Validate)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--emerald)">Verification Agent</span>
+  </div>
+
+  <h4>Finalize Pipeline (Draft &rarr; Publication-Ready)</h4>
+  <div class="pipeline">
+    <span class="pipeline-node" style="border-color:var(--cyan)">Context Agent</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--sapphire)">Finalize Agent (Fact-Check)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--gold)">Policy Agent (Validate)</span>
+    <span class="pipeline-arrow">&rarr;</span>
+    <span class="pipeline-node" style="border-color:var(--emerald)">Verification Agent</span>
+  </div>
+
+  <div class="callout callout-sapphire">
+    <strong>Context Injection:</strong> Every AI draft includes the organization's ground-truth security controls
+    (Trend Micro Vision One XDR, Azure AD E5, ManageEngine, FortiNAC, KnowBe4) to ensure AI-generated
+    remediation maps to actual deployed infrastructure.
+  </div>
+
+  <h3>Database Schema (10 Tables)</h3>
+  <table class="tech-table">
+    <thead><tr><th>Table</th><th>Purpose</th><th>Key Fields</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">news_items</td><td>Intelligence articles</td><td class="purpose">headline, severity, category, fact_check_status, published_at</td></tr>
+      <tr><td class="mono">news_history</td><td>Publication snapshots</td><td class="purpose">news_item_id, payload (JSON), published_at</td></tr>
+      <tr><td class="mono">ai_job_runs</td><td>AI processing jobs</td><td class="purpose">job_type (draft/finalize), status, result_json, attempts</td></tr>
+      <tr><td class="mono">ai_artifacts</td><td>Per-stage outputs</td><td class="purpose">stage (context/draft/policy/verify), artifact (JSON)</td></tr>
+      <tr><td class="mono">admins</td><td>Admin accounts</td><td class="purpose">username, password_hash (bcrypt), last_login_at</td></tr>
+      <tr><td class="mono">audit_logs</td><td>Action audit trail</td><td class="purpose">admin_username, action, details (JSON)</td></tr>
+      <tr><td class="mono">highlights</td><td>Leadership highlights</td><td class="purpose">category, status_details, remarks_actions</td></tr>
+      <tr><td class="mono">rag_status</td><td>Security posture</td><td class="purpose">status (GREEN/AMBER/RED), notes, updated_by</td></tr>
+      <tr><td class="mono">metrics_config</td><td>Dashboard KPI config</td><td class="purpose">payload (JSON: labels, notes, overrides)</td></tr>
+      <tr><td class="mono">daily_reports</td><td>HTML report archive</td><td class="purpose">report_day, html_content, item_count</td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- CYBERDASH TECH STACK                        -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="cyber-stack">
+<div class="container">
+
+  <h2>CyberDash <span class="accent">Technology Stack</span></h2>
+
+  <h3>Backend Technologies</h3>
+  <table class="tech-table">
+    <thead><tr><th>Technology</th><th>Version</th><th>Purpose</th><th>Why This Choice</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="mono">Flask</td><td>3.0.2</td>
+        <td>Web framework</td>
+        <td class="purpose">Mature Python microframework with rich extension ecosystem. Blueprint architecture for modular route organization. Well-suited for synchronous admin workflows and template rendering.</td>
+      </tr>
+      <tr>
+        <td class="mono">PostgreSQL</td><td>15</td>
+        <td>Primary database</td>
+        <td class="purpose">Enterprise-grade RDBMS for structured intelligence data. JSONB columns for flexible AI artifacts. Full ACID compliance for audit trail integrity. Persistent Docker volumes.</td>
+      </tr>
+      <tr>
+        <td class="mono">Redis</td><td>7</td>
+        <td>Cache &amp; rate limiting</td>
+        <td class="purpose">In-memory store for distributed rate limiting across instances. Cache layer for intelligence chat responses (180s TTL). Session store for multi-instance deployments.</td>
+      </tr>
+      <tr>
+        <td class="mono">SQLAlchemy</td><td>2.0.25</td>
+        <td>ORM</td>
+        <td class="purpose">Type-safe database access with query builder. Migration-ready schema definition. Abstracts PostgreSQL dialect specifics for portability.</td>
+      </tr>
+      <tr>
+        <td class="mono">Ollama</td><td>latest</td>
+        <td>Local LLM</td>
+        <td class="purpose">Same justification as ARIA: $0 cost, full data sovereignty. JSON-only output mode ensures structured AI responses. Auto-fallback to smallest available model.</td>
+      </tr>
+      <tr>
+        <td class="mono">Flask-Limiter</td><td>3.5.0</td>
+        <td>Rate limiting</td>
+        <td class="purpose">IP-based rate limiting with Redis backend. 100 req/hour default. Exempts public dashboard endpoints. Prevents brute-force on admin login (8 attempts/5min).</td>
+      </tr>
+      <tr>
+        <td class="mono">Flask-Bcrypt</td><td>1.0.1</td>
+        <td>Password hashing</td>
+        <td class="purpose">bcrypt integration for Flask. Same OWASP-recommended approach as ARIA. Configurable work factor for hardware-appropriate hashing speed.</td>
+      </tr>
+      <tr>
+        <td class="mono">Flask-WTF</td><td>1.2.1</td>
+        <td>CSRF protection</td>
+        <td class="purpose">Token-based CSRF validation on state-changing operations. Prevents cross-site request forgery attacks on admin curation workflows.</td>
+      </tr>
+      <tr>
+        <td class="mono">Feedparser</td><td>6.0.10</td>
+        <td>RSS/Atom parsing</td>
+        <td class="purpose">Battle-tested RSS/Atom parser. Handles malformed feeds gracefully. Extracts publish dates, authors, and content from 30+ intelligence feeds.</td>
+      </tr>
+      <tr>
+        <td class="mono">APScheduler</td><td>3.10.4</td>
+        <td>Job scheduling</td>
+        <td class="purpose">CronTrigger for daily news fetch (05:45), audit (05:55), Telegram prompt (06:00). IntervalTrigger for Telegram polling (20s). Coalesce prevents missed-run pileup.</td>
+      </tr>
+      <tr>
+        <td class="mono">Gunicorn</td><td>21.2.0</td>
+        <td>WSGI server</td>
+        <td class="purpose">Production-grade multi-worker WSGI server. Pre-fork model for process isolation. Graceful restart support for zero-downtime deployments.</td>
+      </tr>
+      <tr>
+        <td class="mono">Nginx</td><td>latest</td>
+        <td>Reverse proxy</td>
+        <td class="purpose">TLS termination with Let's Encrypt. Static asset serving. Load balancing capability. WebSocket/SSE pass-through configuration.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Frontend Technologies</h3>
+  <table class="tech-table">
+    <thead><tr><th>Technology</th><th>Version</th><th>Purpose</th><th>Why This Choice</th></tr></thead>
+    <tbody>
+      <tr>
+        <td class="mono">React</td><td>18</td>
+        <td>UI library</td>
+        <td class="purpose">Concurrent mode for responsive executive dashboard. Lazy loading for heavy components (Admin Panel, Live Attack Map). Context API for notification state.</td>
+      </tr>
+      <tr>
+        <td class="mono">Leaflet</td><td>latest</td>
+        <td>GeoPulse Atlas</td>
+        <td class="purpose">Lightweight mapping library for interactive threat visualization. 42+ pre-defined intelligence locations. Marker clustering for dense incident regions.</td>
+      </tr>
+      <tr>
+        <td class="mono">D3-geo + TopoJSON</td><td>latest</td>
+        <td>Live Attack Map</td>
+        <td class="purpose">Canvas-rendered Mercator projection for real-time attack arc animations. Bezier curves from source to destination with severity color coding. No CDN dependency (local TopoJSON).</td>
+      </tr>
+      <tr>
+        <td class="mono">Spline</td><td>latest</td>
+        <td>3D splash screen</td>
+        <td class="purpose">WebGL 3D visualization for premium executive landing experience. Brand-aligned cyber globe animation with aurora effects.</td>
+      </tr>
+      <tr>
+        <td class="mono">Tailwind CSS</td><td>3.4</td>
+        <td>Styling</td>
+        <td class="purpose">Design system with CSS custom properties. Dark/light mode toggle. Responsive 6&rarr;3&rarr;2&rarr;1 column KPI grid. Custom animations (scan-line, blip-pulse, chat pop-in).</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Infrastructure (Docker Compose)</h3>
+  <table class="tech-table">
+    <thead><tr><th>Service</th><th>Image</th><th>Port</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td class="mono">backend</td><td>Custom (Flask)</td><td>5000</td><td class="purpose">API server with health checks (10s interval, 10 retries)</td></tr>
+      <tr><td class="mono">frontend</td><td>Custom (React)</td><td>3000</td><td class="purpose">SPA dashboard (loopback only in production)</td></tr>
+      <tr><td class="mono">db</td><td>postgres:15-alpine</td><td>5433</td><td class="purpose">Primary data store with persistent volume</td></tr>
+      <tr><td class="mono">redis</td><td>redis:7-alpine</td><td>6379</td><td class="purpose">Rate limiting, caching, session store</td></tr>
+      <tr><td class="mono">llm</td><td>ollama/ollama</td><td>11435</td><td class="purpose">Local LLM inference (health check: 20s interval)</td></tr>
+      <tr><td class="mono">nginx</td><td>nginx:alpine</td><td>80, 443</td><td class="purpose">TLS termination + reverse proxy</td></tr>
+      <tr><td class="mono">certbot</td><td>certbot/certbot</td><td>&mdash;</td><td class="purpose">Let's Encrypt certificate auto-renewal</td></tr>
+      <tr><td class="mono">n8n</td><td>n8nio/n8n</td><td>5678</td><td class="purpose">Workflow automation (optional)</td></tr>
+    </tbody>
+  </table>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- COMPARATIVE ANALYSIS                        -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="stack">
+<div class="container">
+
+  <h2>Comparative <span class="accent">Technology Analysis</span></h2>
+  <p class="section-lead">Side-by-side comparison of architectural decisions across both platforms.</p>
+
+  <div class="compare-grid">
+    <div class="ch">Dimension</div>
+    <div class="ch">ARIA Policy Manager</div>
+    <div class="ch">CyberDash Intelligence</div>
+
+    <div class="cr label-cell">Backend Framework</div>
+    <div class="cr">FastAPI (async, ASGI)</div>
+    <div class="cr">Flask 3.0 (sync, WSGI)</div>
+
+    <div class="cr label-cell">Why Different?</div>
+    <div class="cr" style="font-size:0.82rem;color:var(--text-2)">SSE streaming for real-time policy generation requires async. Auto-generated API docs for developer onboarding.</div>
+    <div class="cr" style="font-size:0.82rem;color:var(--text-2)">Rich extension ecosystem (Limiter, WTF, Bcrypt). Admin curation is primarily synchronous. Mature Telegram integration patterns.</div>
+
+    <div class="cr label-cell">Database</div>
+    <div class="cr">SQLite (embedded)</div>
+    <div class="cr">PostgreSQL 15 + Redis 7</div>
+
+    <div class="cr label-cell">Why Different?</div>
+    <div class="cr" style="font-size:0.82rem;color:var(--text-2)">Single-admin system. Zero-infrastructure deployment. Policy data lives in ChromaDB vectors, not relational tables.</div>
+    <div class="cr" style="font-size:0.82rem;color:var(--text-2)">Multi-table schema (10 tables). JSONB for flexible AI artifacts. Redis for distributed rate limiting and caching.</div>
+
+    <div class="cr label-cell">Frontend</div>
+    <div class="cr">Next.js 16 + React 19 + TypeScript</div>
+    <div class="cr">React 18 + JavaScript (CRA)</div>
+
+    <div class="cr label-cell">AI Agents</div>
+    <div class="cr">4 agents (Expert, Writer, Reviewer, Monitor)</div>
+    <div class="cr">5 agents (Context, Draft, Policy, Verify, Finalize)</div>
+
+    <div class="cr label-cell">Vector Store</div>
+    <div class="cr">ChromaDB (25+ policy docs, persistent)</div>
+    <div class="cr">None (relational + keyword search)</div>
+
+    <div class="cr label-cell">Authentication</div>
+    <div class="cr">JWT (HS256, 60-min expiry)</div>
+    <div class="cr">Session tokens (12-hour expiry) + Basic Auth</div>
+
+    <div class="cr label-cell">Deployment</div>
+    <div class="cr">Manual (Python + Node.js)</div>
+    <div class="cr">Docker Compose (8 services)</div>
+
+    <div class="cr label-cell">External APIs</div>
+    <div class="cr">DuckDuckGo Search (regulatory monitoring)</div>
+    <div class="cr">30+ RSS feeds, Check Point telemetry, Telegram Bot API</div>
+
+    <div class="cr label-cell">Scheduling</div>
+    <div class="cr">APScheduler (6-hour monitoring cycle)</div>
+    <div class="cr">APScheduler (daily fetch 05:45, audit 05:55, Telegram 06:00, polling 20s)</div>
+
+    <div class="cr label-cell">Export Formats</div>
+    <div class="cr">DOCX + PDF (branded)</div>
+    <div class="cr">HTML daily reports (30-day archive)</div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- IMPLEMENTATION GUIDE                        -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="implementation">
+<div class="container">
+
+  <h2>Step-by-Step <span class="accent">Implementation Guide</span></h2>
+
+  <div class="section-divider" style="padding-top:0">
+    <span class="project-label aria-label">ARIA Setup</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-content">
+        <h4>Prerequisites</h4>
+        <p>Install Python 3.11+, Node.js 18+, and <a href="https://ollama.com" style="color:var(--emerald)">Ollama</a>. Install <code>wkhtmltopdf</code> for PDF export capability.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Clone &amp; Configure</h4>
+        <p>Clone the repository. Copy <code>.env.example</code> to <code>.env</code>. Generate a JWT secret with <code>python -c "import secrets; print(secrets.token_hex(32))"</code>. Set <code>ADMIN_PASSWORD</code> to a strong password (12+ characters).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Ollama Model Setup</h4>
+        <p>Start Ollama with <code>ollama serve</code>. Pull the chat model: <code>ollama pull llama3.2:1b</code>. Pull the embedding model: <code>ollama pull nomic-embed-text</code>. Verify with <code>ollama list</code>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Backend Setup</h4>
+        <p>Create virtual environment: <code>python -m venv venv</code>. Activate it. Install dependencies: <code>pip install -r requirements.txt</code>. Place policy PDF documents in the configured <code>POLICY_DOCS_DIR</code> directory.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>RAG Ingestion</h4>
+        <p>On first startup, ARIA automatically ingests all PDF documents from <code>POLICY_DOCS_DIR</code> into ChromaDB. The system chunks documents (1000 chars, 200 overlap) and generates embeddings via <code>nomic-embed-text</code>. This process runs once; subsequent starts load from persistent storage.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Start Backend</h4>
+        <p>Run <code>uvicorn main:app --host 0.0.0.0 --port 8000 --reload</code>. The startup sequence validates secrets, initializes the SQLite database, creates the default admin user, and starts the APScheduler for 6-hour monitoring cycles. Verify at <code>http://localhost:8000/docs</code>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Frontend Setup</h4>
+        <p>Navigate to <code>frontend/</code>. Run <code>npm install</code>. Start development server: <code>npm run dev</code>. The Next.js proxy automatically rewrites <code>/api/*</code> requests to the backend at port 8000. Access at <code>http://localhost:3000</code>.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Verify</h4>
+        <p>Login with configured admin credentials. Navigate to Expert Chat and ask a policy question. Verify RAG retrieval (responses should cite specific policy documents). Check Settings page for monitoring agent status. Generate a test policy and run compliance review.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-divider">
+    <span class="project-label cyber-label">CyberDash Setup</span>
+  </div>
+
+  <div class="steps">
+    <div class="step">
+      <div class="step-content">
+        <h4>Prerequisites</h4>
+        <p>Install Docker and Docker Compose. Install <a href="https://ollama.com" style="color:var(--cyan)">Ollama</a>. Ensure ports 80, 443, 5000, 5432, 6379, 11434 are available.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Clone &amp; Configure</h4>
+        <p>Clone the repository. Copy <code>.env.example</code> to <code>.env</code>. Set <code>SECRET_KEY</code>, <code>ADMIN_PASSWORD_HASH</code> (bcrypt hash), <code>DATABASE_URL</code>, and <code>REDIS_URL</code>. Optionally configure <code>TELEGRAM_BOT_TOKEN</code> for ops workflow.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Pull LLM Model</h4>
+        <p>Pull the AI model: <code>ollama pull llama3.2:1b</code>. The system auto-detects available models and falls back to the smallest variant if the configured model isn't found.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Docker Compose Launch</h4>
+        <p>Run <code>docker compose up -d --build</code>. This launches all 8 services: backend, frontend, PostgreSQL, Redis, Ollama, Nginx, Certbot, and n8n. Health checks ensure services start in correct order (database before backend, Ollama before AI jobs).</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Initial Data Ingestion</h4>
+        <p>The scheduler automatically triggers the first RSS feed fetch. Alternatively, use the Admin Panel to manually trigger <code>POST /admin/fetch</code>. The system ingests, deduplicates, and filters articles for cybersecurity relevance.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>AI Draft &amp; Publish</h4>
+        <p>Access the Admin Panel. Select news items from the queue. Click "AI Draft" to generate CISO-ready summaries. Review and edit the AI output. Click "Finalize" for fact-checking. Approve and publish to the executive dashboard.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Telegram Bot (Optional)</h4>
+        <p>Create a Telegram bot via @BotFather. Set <code>TELEGRAM_BOT_TOKEN</code> in <code>.env</code>. Send any message to the bot &mdash; the system auto-discovers and registers your chat ID. Daily briefings will be sent at 06:00 UAE time.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-content">
+        <h4>Verify</h4>
+        <p>Access the dashboard at <code>http://localhost</code>. Check the GeoPulse Atlas for threat visualization. Verify KPI cards show live metrics. Test the intelligence chat. Run <code>GET /admin/system/health</code> to confirm all components are operational.</p>
+      </div>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- SECURITY ARCHITECTURE                       -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="security">
+<div class="container">
+
+  <h2>Security <span class="accent">Architecture</span></h2>
+  <p class="section-lead">Security controls implemented across both platforms, mapped to compliance requirements.</p>
+
+  <table class="tech-table">
+    <thead><tr><th>Control</th><th>ARIA</th><th>CyberDash</th><th>Framework Mapping</th></tr></thead>
+    <tbody>
+      <tr>
+        <td><strong>Authentication</strong></td>
+        <td>JWT HS256, 60-min expiry</td>
+        <td>Session tokens (12h) + Basic Auth</td>
+        <td class="purpose">ISO 27001 A.9.4, NESA AC-1, NIST PR.AC</td>
+      </tr>
+      <tr>
+        <td><strong>Password Storage</strong></td>
+        <td>bcrypt (passlib)</td>
+        <td>bcrypt (Flask-Bcrypt)</td>
+        <td class="purpose">ISO 27001 A.9.2, OWASP Password Storage</td>
+      </tr>
+      <tr>
+        <td><strong>Rate Limiting</strong></td>
+        <td>In-memory (5 req/5min on sensitive)</td>
+        <td>Redis-backed (100 req/hr, 8/5min login)</td>
+        <td class="purpose">NIST PR.DS, OWASP Brute Force Prevention</td>
+      </tr>
+      <tr>
+        <td><strong>CSRF Protection</strong></td>
+        <td>JWT Bearer (implicit)</td>
+        <td>Flask-WTF CSRF tokens</td>
+        <td class="purpose">OWASP Top 10 A5, ISO 27001 A.14</td>
+      </tr>
+      <tr>
+        <td><strong>User Enumeration</strong></td>
+        <td>Same error for all auth failures</td>
+        <td>Generic login error responses</td>
+        <td class="purpose">OWASP Authentication Cheat Sheet</td>
+      </tr>
+      <tr>
+        <td><strong>CORS Policy</strong></td>
+        <td>Configured origins (localhost:3000/3001)</td>
+        <td>Configurable ALLOWED_ORIGINS</td>
+        <td class="purpose">OWASP Security Headers</td>
+      </tr>
+      <tr>
+        <td><strong>Audit Logging</strong></td>
+        <td>Structured logging (all auth events)</td>
+        <td>AuditLog table (all admin actions)</td>
+        <td class="purpose">ISO 27001 A.12.4, NESA LM-1</td>
+      </tr>
+      <tr>
+        <td><strong>Data Sovereignty</strong></td>
+        <td>100% local (Ollama + ChromaDB)</td>
+        <td>100% local (Ollama + PostgreSQL)</td>
+        <td class="purpose">UAE PDPL Art. 22, NESA DS-1</td>
+      </tr>
+      <tr>
+        <td><strong>Secret Management</strong></td>
+        <td>Fail-fast validation at startup</td>
+        <td>.env file, not versioned</td>
+        <td class="purpose">CIS Control 3, NIST PR.DS-5</td>
+      </tr>
+      <tr>
+        <td><strong>Password Recovery</strong></td>
+        <td>Security Q&A (bcrypt-hashed answers)</td>
+        <td>Admin-only password reset</td>
+        <td class="purpose">ISO 27001 A.9.2.4</td>
+      </tr>
+      <tr>
+        <td><strong>TLS/SSL</strong></td>
+        <td>Via external reverse proxy</td>
+        <td>Nginx + Let's Encrypt (Certbot)</td>
+        <td class="purpose">ISO 27001 A.10.1, NESA CR-1</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="callout callout-emerald">
+    <strong>Air-Gapped Design:</strong> Both platforms are designed for operation without any outbound internet
+    connectivity for LLM processing. All AI inference runs on local Ollama instances. The only optional
+    external connections are DuckDuckGo (ARIA monitoring), RSS feeds (CyberDash ingestion), and
+    Telegram Bot API (CyberDash ops).
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- ROADMAP                                     -->
+<!-- ════════════════════════════════════════════ -->
+<div class="page-break"></div>
+<div class="section-page" id="roadmap">
+<div class="container">
+
+  <h2>Future <span class="accent">Improvements</span></h2>
+  <p class="section-lead">Strategic roadmap for enhancing both platforms based on technical audit findings and operational requirements.</p>
+
+  <div class="section-divider" style="padding-top:0">
+    <span class="project-label aria-label">ARIA Improvements</span>
+  </div>
+
+  <div class="improve-grid">
+    <div class="improve-card">
+      <div class="priority p0">P0 &mdash; Critical</div>
+      <h4>Migrate to langchain_ollama Imports</h4>
+      <p>Current code uses deprecated <code>langchain_community.ChatOllama</code> and <code>OllamaEmbeddings</code>. Migrate to <code>langchain_ollama</code> package for continued compatibility and performance improvements.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p0">P0 &mdash; Critical</div>
+      <h4>Persistent Audit Log Database</h4>
+      <p>Currently audit events are only logged to stdout. Implement a dedicated audit_logs SQLite table capturing all authentication events, policy operations, and monitoring cycles for compliance evidence.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>Role-Based Access Control (RBAC)</h4>
+      <p>Extend single-admin model to support multiple roles: CISO (full access), Policy Author (generate/review), Auditor (read-only compliance views), Viewer (dashboard only).</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>PostgreSQL Migration</h4>
+      <p>Migrate from SQLite to PostgreSQL for multi-instance deployment, concurrent access, and enterprise backup/restore capabilities. Required for horizontal scaling.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>Distributed Rate Limiting</h4>
+      <p>Replace in-memory rate limit store with Redis-backed implementation. Current approach loses state on restart and doesn't work across multiple API instances.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Docker Compose Deployment</h4>
+      <p>Create containerized deployment matching CyberDash's Docker Compose architecture. Include Ollama, backend, frontend, and Nginx services with health checks and persistent volumes.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Policy Version Control</h4>
+      <p>Implement version history for generated policies. Track changes, enable diff comparison, and maintain approval chain records. Essential for ISO 27001 document control requirements.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Larger LLM Model Support</h4>
+      <p>Add configuration profiles for larger models (llama3:7b, codellama) with automatic context window management. Larger models significantly improve policy generation quality and compliance review depth.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p3">P3 &mdash; Future</div>
+      <h4>Multi-Tenant Architecture</h4>
+      <p>Enable ARIA to serve multiple business units within Ali &amp; Sons Group, each with isolated policy libraries, ChromaDB collections, and compliance requirements.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p3">P3 &mdash; Future</div>
+      <h4>Policy Gap Analysis Dashboard</h4>
+      <p>Visual dashboard showing compliance coverage heatmap across all 7 frameworks. Identify which policies need updating, which framework controls lack coverage, and track remediation progress.</p>
+    </div>
+  </div>
+
+  <div class="section-divider">
+    <span class="project-label cyber-label">CyberDash Improvements</span>
+  </div>
+
+  <div class="improve-grid">
+    <div class="improve-card">
+      <div class="priority p0">P0 &mdash; Critical</div>
+      <h4>API Key Management</h4>
+      <p>Implement API key authentication for programmatic access (n8n workflows, SIEM integrations). Current basic auth is not suitable for automated service-to-service communication.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p0">P0 &mdash; Critical</div>
+      <h4>Input Sanitization Hardening</h4>
+      <p>Add comprehensive XSS prevention on all user-submitted content (news items, highlights, posture notes). Implement Content Security Policy (CSP) headers on Nginx.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>SIEM Integration</h4>
+      <p>Add webhook endpoints for forwarding critical alerts to enterprise SIEM (Trend Micro Vision One, Microsoft Sentinel). Enable bi-directional enrichment with internal threat data.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>RAG-Powered Intelligence Chat</h4>
+      <p>Add ChromaDB vector store (matching ARIA's implementation) for semantic intelligence retrieval. Current keyword-based search misses contextual matches and synonym relationships.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Email Report Distribution</h4>
+      <p>Add SMTP integration for automated daily report distribution to configurable C-suite recipients. Currently reports are only accessible via web dashboard.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Historical Trend Analytics</h4>
+      <p>Add time-series visualization of threat categories, severity distribution, and source coverage over 30/60/90-day windows. Enable trend-based risk assessment for board reporting.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p2">P2 &mdash; Medium</div>
+      <h4>Multi-Language Support</h4>
+      <p>Add Arabic language support for executive briefings and dashboard labels. Essential for UAE government stakeholder communications and ADDA compliance.</p>
+    </div>
+    <div class="improve-card">
+      <div class="priority p3">P3 &mdash; Future</div>
+      <h4>Threat Intelligence Sharing (STIX/TAXII)</h4>
+      <p>Implement STIX 2.1 format export for threat indicators. Enable TAXII server for automated intelligence sharing with UAE CERT and sector ISACs.</p>
+    </div>
+  </div>
+
+  <h3>Cross-Platform Integration Roadmap</h3>
+
+  <div class="improve-grid">
+    <div class="improve-card" style="grid-column: span 2;">
+      <div class="priority p1">P1 &mdash; High</div>
+      <h4>ARIA &harr; CyberDash Bidirectional Integration</h4>
+      <p>
+        Connect both platforms to create a closed-loop security governance system:
+        <br><br>
+        <strong>CyberDash &rarr; ARIA:</strong> When CyberDash publishes a critical threat briefing, automatically trigger ARIA's
+        Policy Writer to draft or update the relevant policy (e.g., new ransomware variant triggers Incident Response Policy review).
+        <br><br>
+        <strong>ARIA &rarr; CyberDash:</strong> When ARIA's Autonomous Monitor detects a regulatory update (e.g., new NESA control),
+        push a notification to CyberDash's leadership highlights board for C-suite visibility.
+        <br><br>
+        <strong>Shared Vector Store:</strong> Unify ChromaDB collections so CyberDash intelligence enriches ARIA's policy context,
+        and ARIA's policy knowledge grounds CyberDash's remediation recommendations.
+      </p>
+    </div>
+  </div>
+
+</div>
+</div>
+
+<!-- ════════════════════════════════════════════ -->
+<!-- FOOTER                                      -->
+<!-- ════════════════════════════════════════════ -->
+<div class="footer">
+  <p><strong>Ali &amp; Sons Holding &mdash; DIH IT Security Division</strong></p>
+  <p>Abu Dhabi, United Arab Emirates &nbsp;&bull;&nbsp; March 2025</p>
+  <p style="margin-top:12px;opacity:0.6">
+    Prepared by <strong>Imran Batcha</strong> &nbsp;|&nbsp; CISM &nbsp;|&nbsp; AI Security Engineer
+  </p>
+  <p style="opacity:0.4;margin-top:8px;font-size:0.75rem">CONFIDENTIAL &mdash; For internal use only</p>
+</div>
+
+</body>
+</html>
