@@ -1,0 +1,54 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.egg-info/
+dist/
+build/
+*.egg
+venv/
+.venv/
+backend/venv/
+
+# Environment
+.env
+backend/.env
+
+# Database
+backend/admin.db
+backend/chroma_db/
+
+# Node
+node_modules/
+frontend/node_modules/
+frontend/.next/
+frontend/out/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Generated HTML exports
+*.html
+!frontend/src/**/*.html
+
+# MCP config (may contain secrets)
+.mcp.json
+
+# Logs
+*.log
+
+# Resume/Portfolio files (personal)
+Imran_Batcha_Resume_2026.html
+Imran Portfolio.html
+NEW_README.md
+gittok.txt
+ASH_IT_Policy_Report_2025.html

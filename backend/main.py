@@ -1,0 +1,117 @@
+"""
+main.py — FastAPI application entry point.
+
+Startup sequence:
+  1. validate_secrets()  — fail fast if JWT_SECRET / ADMIN_PASSWORD are unset
+  2. init_db()           — create SQLite tables and default admin user
+  3. start_scheduler()   — launch the 6-hour autonomous monitoring agent
+"""
+
+import logging
+from contextlib import asynccontextmanager
+
+from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi.middleware.cors import CORSMiddleware
+
+from .auth import create_access_token, verify_token
+from .config import settings
+from .database import get_user, init_db, verify_password
+from .schemas import LoginRequest, Token
+from .policies import router as policies_router
+from .admin_routes import router as admin_router
+from .monitor import start_scheduler
+
+# ── Logging ───────────────────────────────────────────────────────────────────
+
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s | %(levelname)-8s | %(name)s | %(message)s",
+    datefmt="%Y-%m-%d %H:%M:%S",
+)
+logger = logging.getLogger(__name__)
+
+# ── Lifespan ──────────────────────────────────────────────────────────────────
+
+_scheduler = None
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    global _scheduler
+
+    # 1. Validate critical secrets before anything else
+    settings.validate_secrets()
+    logger.info("Secrets validated.")
+
+    # 2. Initialise database
+    init_db()
+    logger.info("Database initialised.")
+
+    # 3. Start autonomous monitoring scheduler
+    _scheduler = start_scheduler()
+    logger.info("ARIA IT Policy Manager API is ready.")
+
+    yield  # app runs here
+
+    # Graceful shutdown
+    if _scheduler and _scheduler.running:
+        _scheduler.shutdown(wait=False)
+        logger.info("Monitoring scheduler stopped.")
+
+
+# ── App ───────────────────────────────────────────────────────────────────────
+
+app = FastAPI(
+    title="ARIA — IT Policy Manager API",
+    description="AI-powered IT policy management for Ali & Sons Holding, UAE",
+    version="2.0.0",
+    lifespan=lifespan,
+)
+
+# ── CORS ──────────────────────────────────────────────────────────────────────
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[
+        "http://localhost:3000",
+        "http://localhost:3001",
+    ],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
+# ── Routers ───────────────────────────────────────────────────────────────────
+
+app.include_router(policies_router)
+app.include_router(admin_router)
+
+# ── Auth endpoints ────────────────────────────────────────────────────────────
+
+@app.post("/api/admin/login", response_model=Token, tags=["auth"])
+def login(login_req: LoginRequest):
+    """Validate admin credentials and return a JWT access token."""
+    user_db = get_user(login_req.username)
+
+    # Use a constant-time comparison path regardless of whether user exists
+    if not user_db or not verify_password(login_req.password, user_db["password_hash"]):
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid username or password.",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
+
+    access_token = create_access_token(data={"sub": login_req.username})
+    logger.info("Login successful: %s", login_req.username)
+    return {"access_token": access_token, "token_type": "bearer"}
+
+
+@app.get("/api/admin/me", tags=["auth"])
+def read_me(current_user: str = Depends(verify_token)):
+    """Return the authenticated user's info."""
+    return {"username": current_user}
+
+
+@app.get("/", tags=["health"])
+def health():
+    return {"status": "ok", "service": "ARIA IT Policy Manager"}
