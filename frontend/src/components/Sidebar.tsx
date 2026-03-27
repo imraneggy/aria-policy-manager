@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { apiFetch, clearToken } from "@/lib/api";
+import { useTheme } from "@/lib/theme";
 
 interface SidebarProps {
   activeTab: string;
@@ -25,9 +26,19 @@ interface SystemStatus {
 
 const navItems = [
   {
+    id: "overview",
+    label: "Dashboard",
+    description: "Compliance overview",
+    icon: (
+      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M4 5a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1V5zm10 0a1 1 0 011-1h4a1 1 0 011 1v3a1 1 0 01-1 1h-4a1 1 0 01-1-1V5zm0 8a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1h-4a1 1 0 01-1-1v-5zM4 14a1 1 0 011-1h4a1 1 0 011 1v5a1 1 0 01-1 1H5a1 1 0 01-1-1v-5z" />
+      </svg>
+    ),
+  },
+  {
     id: "chat",
-    label: "Expert Chat",
-    description: "AI policy advisor",
+    label: "Policy Advisor",
+    description: "AI governance advisor",
     icon: (
       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.75}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -58,6 +69,7 @@ const navItems = [
 
 export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
   const router = useRouter();
+  const { theme, toggleTheme } = useTheme();
   const [policies, setPolicies] = useState<string[]>([]);
   const [filteredPolicies, setFilteredPolicies] = useState<string[]>([]);
   const [policySearch, setPolicySearch] = useState("");
@@ -161,7 +173,7 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
         }}
       />
 
-      {/* Logo */}
+      {/* Logo + Theme Toggle */}
       <div
         style={{
           padding: "18px 18px 16px",
@@ -171,30 +183,23 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
           gap: 11,
         }}
       >
-        <div
+        <img
+          src="/logo-mark.png"
+          alt="Ali & Sons"
           style={{
             width: 36,
             height: 36,
-            borderRadius: 10,
-            background: "rgba(16,217,160,0.08)",
-            border: "1px solid rgba(16,217,160,0.2)",
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
+            borderRadius: 8,
+            objectFit: "contain",
             flexShrink: 0,
+            filter: theme === "dark"
+              ? "brightness(1.15) contrast(1.1)"
+              : "none",
+            imageRendering: "auto",
+            transition: "filter 0.3s ease",
           }}
-        >
-          <svg width="20" height="20" viewBox="0 0 36 36" fill="none">
-            <path
-              d="M18 3L4 9v10c0 8.284 5.954 16.027 14 18 8.046-1.973 14-9.716 14-18V9L18 3z"
-              fill="rgba(16,217,160,0.15)"
-              stroke="#10d9a0"
-              strokeWidth="1.5"
-            />
-            <path d="M13 18l3 3 7-7" stroke="#10d9a0" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-        </div>
-        <div style={{ minWidth: 0 }}>
+        />
+        <div style={{ minWidth: 0, flex: 1 }}>
           <div
             style={{
               fontWeight: 700,
@@ -204,12 +209,51 @@ export default function Sidebar({ activeTab, onTabChange }: SidebarProps) {
               lineHeight: 1.1,
             }}
           >
-            ARIA
+            DIH CyberAI
           </div>
           <div style={{ fontSize: 10.5, color: "var(--text-muted)", marginTop: 2, lineHeight: 1 }}>
-            Ali &amp; Sons Holding
+            Policy Governance
           </div>
         </div>
+        <button
+          onClick={toggleTheme}
+          title={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+          style={{
+            width: 32,
+            height: 32,
+            borderRadius: 8,
+            border: "1px solid var(--border)",
+            background: "transparent",
+            cursor: "pointer",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "var(--text-muted)",
+            transition: "all 0.2s ease",
+            flexShrink: 0,
+          }}
+          onMouseEnter={(e) => {
+            e.currentTarget.style.borderColor = "var(--border-hover)";
+            e.currentTarget.style.color = "var(--text-secondary)";
+            e.currentTarget.style.background = "var(--bg-surface-2)";
+          }}
+          onMouseLeave={(e) => {
+            e.currentTarget.style.borderColor = "var(--border)";
+            e.currentTarget.style.color = "var(--text-muted)";
+            e.currentTarget.style.background = "transparent";
+          }}
+        >
+          {theme === "dark" ? (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <circle cx="12" cy="12" r="5" />
+              <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+            </svg>
+          ) : (
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2}>
+              <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
+            </svg>
+          )}
+        </button>
       </div>
 
       {/* System Status */}

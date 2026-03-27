@@ -17,9 +17,9 @@ const jetbrainsMono = JetBrains_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "ARIA | Ali & Sons IT Policy Manager",
+  title: "DIH CyberAI | Ali & Sons Policy Governance",
   description:
-    "AI-powered IT policy management for Ali & Sons Holding — UAE NESA, ISO 27001:2022, UAE PDPL compliance.",
+    "DIH CyberAI — AI-powered cyber governance and IT policy management for Ali & Sons Holding — UAE NESA, ISO 27001:2022, UAE PDPL compliance.",
 };
 
 export default function RootLayout({
@@ -28,7 +28,16 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
+      <head>
+        {/* Apply saved theme before first paint to prevent flash.
+            This is a hardcoded static string — no user input involved. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var t=localStorage.getItem("aegis-theme");if(t==="light")document.documentElement.setAttribute("data-theme","light")}catch(e){}})()`,
+          }}
+        />
+      </head>
       <body
         className={`${sora.variable} ${jetbrainsMono.variable} antialiased`}
       >

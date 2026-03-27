@@ -10,7 +10,7 @@ Startup sequence:
 import logging
 from contextlib import asynccontextmanager
 
-from fastapi import Depends, FastAPI, HTTPException, status
+from fastapi import Depends, FastAPI, HTTPException, Request, status
 from fastapi.middleware.cors import CORSMiddleware
 
 from .auth import create_access_token, verify_token
@@ -20,6 +20,8 @@ from .schemas import LoginRequest, Token
 from .policies import router as policies_router
 from .admin_routes import router as admin_router
 from .monitor import start_scheduler
+from .audit import init_audit_table, log_event, EVENT_LOGIN_SUCCESS, EVENT_LOGIN_FAILED
+from .middleware import SecurityHeadersMiddleware
 
 # ── Logging ───────────────────────────────────────────────────────────────────
 
@@ -43,13 +45,22 @@ async def lifespan(app: FastAPI):
     settings.validate_secrets()
     logger.info("Secrets validated.")
 
-    # 2. Initialise database
+    # 2. Initialise database + audit table
     init_db()
-    logger.info("Database initialised.")
+    init_audit_table()
+    logger.info("Database initialised (including audit_log table).")
 
-    # 3. Start autonomous monitoring scheduler
+    # 3. ChromaDB ingestion check skipped at startup (done lazily on first query)
+    logger.info("ChromaDB will be initialized on first policy query.")
+
+    # 4. Pre-load policy cache in background (non-blocking)
+    from .policy_cache import init_cache_background
+    init_cache_background()
+    logger.info("Policy cache background loading initiated.")
+
+    # 5. Start autonomous monitoring scheduler
     _scheduler = start_scheduler()
-    logger.info("ARIA IT Policy Manager API is ready.")
+    logger.info("AEGIS IT Policy Manager API is ready.")
 
     yield  # app runs here
 
@@ -62,7 +73,7 @@ async def lifespan(app: FastAPI):
 # ── App ───────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
-    title="ARIA — IT Policy Manager API",
+    title="AEGIS — IT Policy Manager API",
     description="AI-powered IT policy management for Ali & Sons Holding, UAE",
     version="2.0.0",
     lifespan=lifespan,
@@ -77,9 +88,11 @@ app.add_middleware(
         "http://localhost:3001",
     ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_methods=["GET", "POST", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
+# SecurityHeaders registered AFTER CORS so it wraps outermost (Starlette reverses order)
+app.add_middleware(SecurityHeadersMiddleware)
 
 # ── Routers ───────────────────────────────────────────────────────────────────
 
@@ -89,12 +102,20 @@ app.include_router(admin_router)
 # ── Auth endpoints ────────────────────────────────────────────────────────────
 
 @app.post("/api/admin/login", response_model=Token, tags=["auth"])
-def login(login_req: LoginRequest):
+def login(login_req: LoginRequest, request: Request):
     """Validate admin credentials and return a JWT access token."""
+    from .admin_routes import _get_client_ip, _check_rate_limit
+    client_ip = _get_client_ip(request)
+    user_agent = request.headers.get("User-Agent", "")[:200]
+
+    # Rate-limit login attempts by IP
+    _check_rate_limit(f"login:{client_ip}")
+
     user_db = get_user(login_req.username)
 
     # Use a constant-time comparison path regardless of whether user exists
     if not user_db or not verify_password(login_req.password, user_db["password_hash"]):
+        log_event(EVENT_LOGIN_FAILED, username=login_req.username, client_ip=client_ip, user_agent=user_agent)
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Invalid username or password.",
@@ -102,6 +123,7 @@ def login(login_req: LoginRequest):
         )
 
     access_token = create_access_token(data={"sub": login_req.username})
+    log_event(EVENT_LOGIN_SUCCESS, username=login_req.username, client_ip=client_ip, user_agent=user_agent)
     logger.info("Login successful: %s", login_req.username)
     return {"access_token": access_token, "token_type": "bearer"}
 
@@ -114,4 +136,23 @@ def read_me(current_user: str = Depends(verify_token)):
 
 @app.get("/", tags=["health"])
 def health():
-    return {"status": "ok", "service": "ARIA IT Policy Manager"}
+    return {"status": "ok", "service": "AEGIS IT Policy Manager"}
+
+
+@app.get("/api/health", tags=["health"])
+def health_detailed():
+    """Detailed health check with component status."""
+    from .monitor import monitoring_state
+    import os
+
+    chroma_path = os.path.join(os.path.dirname(__file__), "chroma_db")
+    return {
+        "status": "ok",
+        "service": "AEGIS IT Policy Manager",
+        "version": "2.1.0",
+        "components": {
+            "database": "ok",
+            "chromadb": "ok" if os.path.isdir(chroma_path) else "not_initialised",
+            "monitoring": monitoring_state.get("last_status", "unknown"),
+        },
+    }

@@ -46,9 +46,24 @@ desktop.ini
 # Logs
 *.log
 
+# Claude Code / AI tooling
+.claude/
+backend/.claude/
+frontend/.claude/
+
+# Secrets and tokens
+gittok.txt
+tok.txt
+push_docs.py
+
+# One-off scripts and unrelated docs
+test_gen.py
+CYBERDASH_README.md
+NEW_README.md
+
 # Resume/Portfolio files (personal)
 Imran_Batcha_Resume_2026.html
 Imran Portfolio.html
-NEW_README.md
-gittok.txt
 ASH_IT_Policy_Report_2025.html
+ASH_Technology_Report_2025.html
+Late.html

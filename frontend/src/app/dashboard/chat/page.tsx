@@ -311,15 +311,49 @@ function CopyButton({ text }: { text: string }) {
   );
 }
 
+const CHAT_STORAGE_KEY = "aegis-chat-history";
+
+function loadChatHistory(): Message[] {
+  try {
+    const stored = localStorage.getItem(CHAT_STORAGE_KEY);
+    if (!stored) return [];
+    const parsed = JSON.parse(stored) as Array<{ id: string; role: string; content: string; timestamp: string }>;
+    return parsed.map((m) => ({
+      ...m,
+      role: m.role as "user" | "assistant",
+      timestamp: new Date(m.timestamp),
+    }));
+  } catch {
+    return [];
+  }
+}
+
+function saveChatHistory(messages: Message[]): void {
+  try {
+    // Keep last 50 messages to avoid bloating localStorage
+    const toSave = messages.slice(-50);
+    localStorage.setItem(CHAT_STORAGE_KEY, JSON.stringify(toSave));
+  } catch {
+    // localStorage full or unavailable — silently fail
+  }
+}
+
 function ChatContent() {
   const searchParams = useSearchParams();
-  const [messages, setMessages] = useState<Message[]>([]);
+  const [messages, setMessages] = useState<Message[]>(() => loadChatHistory());
   const [input, setInput] = useState("");
   const [streaming, setStreaming] = useState(false);
   const [currentStreamText, setCurrentStreamText] = useState("");
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const initialQHandled = useRef(false);
+
+  // Persist chat history to localStorage
+  useEffect(() => {
+    if (messages.length > 0) {
+      saveChatHistory(messages);
+    }
+  }, [messages]);
 
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: "smooth" });
@@ -429,15 +463,32 @@ function ChatContent() {
               marginBottom: 2,
             }}
           >
-            ARIA — Master IT Policy Expert
+            AEGIS — Policy Intelligence Advisor
           </h1>
           <p style={{ fontSize: 11.5, color: "var(--text-muted)" }}>
             UAE NESA &bull; ISO 27001:2022 &bull; UAE PDPL &bull; NIST CSF 2.0 &bull; CIS Controls v8
           </p>
         </div>
-        <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-          <span className="status-dot online" />
-          <span style={{ fontSize: 11.5, color: "var(--success)", fontWeight: 500 }}>RAG Active</span>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          {messages.length > 0 && (
+            <button
+              onClick={() => {
+                setMessages([]);
+                localStorage.removeItem(CHAT_STORAGE_KEY);
+              }}
+              className="btn-ghost"
+              style={{ padding: "5px 12px", fontSize: 11 }}
+            >
+              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: "inline", marginRight: 4 }}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
+              </svg>
+              Clear Chat
+            </button>
+          )}
+          <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <span className="status-dot online" />
+            <span style={{ fontSize: 11.5, color: "var(--success)", fontWeight: 500 }}>RAG Active</span>
+          </div>
         </div>
       </div>
 
@@ -470,7 +521,7 @@ function ChatContent() {
             </div>
             <div style={{ textAlign: "center" }}>
               <p style={{ fontSize: 17, fontWeight: 600, color: "var(--text-primary)", marginBottom: 6 }}>
-                Ask ARIA anything about your policies
+                Ask AEGIS anything about your policies
               </p>
               <p style={{ fontSize: 13, color: "var(--text-muted)" }}>
                 Grounded in 25+ corporate policies and live regulatory standards
@@ -560,7 +611,7 @@ function ChatContent() {
                         overflow: "hidden",
                       }}
                     >
-                      {/* ARIA label bar */}
+                      {/* AEGIS label bar */}
                       <div
                         style={{
                           padding: "8px 16px",
@@ -593,7 +644,7 @@ function ChatContent() {
                             </svg>
                           </div>
                           <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent)" }}>
-                            ARIA
+                            AEGIS
                           </span>
                         </div>
                         <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
@@ -653,7 +704,7 @@ function ChatContent() {
                       </svg>
                     </div>
                     <span style={{ fontSize: 11, fontWeight: 700, textTransform: "uppercase", letterSpacing: "0.08em", color: "var(--accent)" }}>
-                      ARIA
+                      AEGIS
                     </span>
                     <span style={{ fontSize: 10.5, color: "var(--text-muted)", marginLeft: 4 }}>Responding...</span>
                   </div>
