@@ -91,6 +91,240 @@ const inputFocusStyle = (color = "var(--accent)", rgba = "rgba(16,217,160,0.1)")
   },
 });
 
+// ── Password Strength Meter ────────────────────────────────────────────────
+
+function PasswordStrengthMeter({ password }: { password: string }) {
+  if (!password) return null;
+
+  const checks = [
+    { label: "12+ characters", pass: password.length >= 12 },
+    { label: "Uppercase letter", pass: /[A-Z]/.test(password) },
+    { label: "Lowercase letter", pass: /[a-z]/.test(password) },
+    { label: "Digit", pass: /\d/.test(password) },
+    { label: "Special character", pass: /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>/?`~]/.test(password) },
+  ];
+  const score = checks.filter((c) => c.pass).length;
+
+  const barColor =
+    score <= 2 ? "var(--danger)" :
+    score <= 3 ? "var(--warning)" :
+    score <= 4 ? "var(--gold)" :
+    "var(--success)";
+
+  const label =
+    score <= 2 ? "Weak" :
+    score <= 3 ? "Fair" :
+    score <= 4 ? "Good" :
+    "Strong";
+
+  return (
+    <div style={{ marginTop: 8 }}>
+      {/* Strength bar */}
+      <div style={{ display: "flex", gap: 3, marginBottom: 6 }}>
+        {[1, 2, 3, 4, 5].map((i) => (
+          <div
+            key={i}
+            style={{
+              flex: 1,
+              height: 3,
+              borderRadius: 2,
+              background: i <= score ? barColor : "var(--bg-surface-3)",
+              transition: "background 0.2s ease",
+            }}
+          />
+        ))}
+      </div>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
+        <span style={{ fontSize: 10.5, fontWeight: 600, color: barColor }}>{label}</span>
+        <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+          {checks.map((c) => (
+            <span
+              key={c.label}
+              style={{
+                fontSize: 10,
+                color: c.pass ? "var(--success)" : "var(--text-muted)",
+                display: "flex",
+                alignItems: "center",
+                gap: 2,
+              }}
+            >
+              {c.pass ? "\u2713" : "\u2717"} {c.label}
+            </span>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── Audit Log Section ──────────────────────────────────────────────────────
+
+interface AuditEntry {
+  id: number;
+  timestamp: string;
+  event_type: string;
+  username: string;
+  client_ip: string;
+  detail: string;
+}
+
+function AuditLogSection() {
+  const [logs, setLogs] = useState<AuditEntry[]>([]);
+  const [loading, setLoading] = useState(true);
+  const [expanded, setExpanded] = useState(false);
+
+  const fetchLogs = () => {
+    setLoading(true);
+    apiFetch("/api/admin/secure/audit-log?limit=30")
+      .then((r) => r.json())
+      .then((data) => { setLogs(data.logs || []); setLoading(false); })
+      .catch(() => setLoading(false));
+  };
+
+  useEffect(() => { fetchLogs(); }, []);
+
+  const eventColor = (type: string) => {
+    if (type.includes("FAILED") || type.includes("ERROR")) return "var(--danger)";
+    if (type.includes("SUCCESS") || type.includes("CHANGED") || type.includes("RESET")) return "var(--success)";
+    if (type.includes("RATE")) return "var(--warning)";
+    return "var(--text-secondary)";
+  };
+
+  const eventIcon = (type: string) => {
+    if (type.includes("LOGIN")) return "sign-in";
+    if (type.includes("PASSWORD")) return "key";
+    if (type.includes("EXPORT")) return "download";
+    return "event";
+  };
+
+  const formatTs = (ts: string) => {
+    try {
+      return new Date(ts).toLocaleString("en-AE", {
+        month: "short", day: "2-digit", hour: "2-digit", minute: "2-digit",
+      });
+    } catch { return ts; }
+  };
+
+  const cardStyle = {
+    background: "var(--bg-surface)",
+    border: "1px solid var(--border)",
+    borderRadius: 12,
+    padding: "22px 24px",
+    marginBottom: 18,
+  };
+
+  return (
+    <div style={cardStyle}>
+      <div style={{ display: "flex", alignItems: "flex-start", justifyContent: "space-between", marginBottom: 18 }}>
+        <SectionHeader
+          icon={
+            <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
+            </svg>
+          }
+          title="Security Audit Log"
+          subtitle="Recent login attempts, password changes, and security events"
+          iconColor="var(--danger)"
+        />
+        <button
+          onClick={fetchLogs}
+          className="btn-ghost"
+          style={{ padding: "5px 12px", fontSize: 12, flexShrink: 0, marginTop: 2 }}
+        >
+          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: "inline", marginRight: 5 }}>
+            <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          Refresh
+        </button>
+      </div>
+
+      {loading ? (
+        <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+          {[...Array(4)].map((_, i) => (
+            <div key={i} className="skeleton" style={{ height: 38, borderRadius: 7 }} />
+          ))}
+        </div>
+      ) : logs.length === 0 ? (
+        <div style={{ padding: "16px", textAlign: "center", fontSize: 13, color: "var(--text-muted)" }}>
+          No audit events recorded yet.
+        </div>
+      ) : (
+        <div style={{ display: "flex", flexDirection: "column", gap: 4 }}>
+          {(expanded ? logs : logs.slice(0, 8)).map((log) => (
+            <div
+              key={log.id}
+              style={{
+                display: "flex",
+                alignItems: "center",
+                gap: 12,
+                padding: "8px 12px",
+                background: "var(--bg-surface-2)",
+                borderRadius: 7,
+                border: "1px solid var(--border)",
+              }}
+            >
+              <div
+                style={{
+                  width: 6,
+                  height: 6,
+                  borderRadius: "50%",
+                  background: eventColor(log.event_type),
+                  flexShrink: 0,
+                }}
+              />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 8, flexWrap: "wrap" }}>
+                  <span
+                    style={{
+                      fontSize: 11,
+                      fontWeight: 600,
+                      fontFamily: "var(--font-mono)",
+                      color: eventColor(log.event_type),
+                      letterSpacing: "0.03em",
+                    }}
+                  >
+                    {log.event_type}
+                  </span>
+                  {log.username && (
+                    <span style={{ fontSize: 11, color: "var(--text-secondary)" }}>
+                      {log.username}
+                    </span>
+                  )}
+                  {log.client_ip && (
+                    <span style={{ fontSize: 10, color: "var(--text-muted)", fontFamily: "var(--font-mono)" }}>
+                      {log.client_ip}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <span style={{ fontSize: 10.5, color: "var(--text-muted)", flexShrink: 0 }}>
+                {formatTs(log.timestamp)}
+              </span>
+            </div>
+          ))}
+          {logs.length > 8 && (
+            <button
+              onClick={() => setExpanded(!expanded)}
+              style={{
+                background: "none",
+                border: "none",
+                cursor: "pointer",
+                fontSize: 12,
+                color: "var(--accent)",
+                fontFamily: "var(--font-sans)",
+                padding: "6px 0",
+                textAlign: "center",
+              }}
+            >
+              {expanded ? "Show less" : `Show all ${logs.length} events`}
+            </button>
+          )}
+        </div>
+      )}
+    </div>
+  );
+}
+
 export default function SettingsPage() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -345,6 +579,7 @@ export default function SettingsPage() {
                 />
               </div>
             ))}
+            <PasswordStrengthMeter password={newPassword} />
             <FormFeedback state={pwdState} />
             <button type="submit" disabled={pwdState.loading} className="btn-primary" style={{ padding: "10px 20px", alignSelf: "flex-start", fontSize: 13 }}>
               {pwdState.loading ? (
@@ -447,16 +682,29 @@ export default function SettingsPage() {
               subtitle="Crawls UAE NESA, ISO 27001:2022, UAE PDPL, and related standards every 6 hours"
               iconColor="var(--success)"
             />
-            <button
-              onClick={fetchMonitoring}
-              className="btn-ghost"
-              style={{ padding: "5px 12px", fontSize: 12, flexShrink: 0, marginTop: 2 }}
-            >
-              <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} style={{ display: "inline", marginRight: 5 }}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-              </svg>
-              Refresh
-            </button>
+            <div style={{ display: "flex", gap: 6, flexShrink: 0, marginTop: 2 }}>
+              <button
+                onClick={async () => {
+                  try {
+                    const res = await apiFetch("/api/admin/secure/monitoring-run", { method: "POST" });
+                    const data = await res.json();
+                    if (data.status === "already_running") alert("Monitor is already running.");
+                    else { alert("Monitoring cycle started. Check back in a few minutes."); setTimeout(fetchMonitoring, 5000); }
+                  } catch { alert("Failed to trigger monitoring."); }
+                }}
+                className="btn-primary"
+                style={{ padding: "5px 12px", fontSize: 12 }}
+              >
+                Run Now
+              </button>
+              <button
+                onClick={fetchMonitoring}
+                className="btn-ghost"
+                style={{ padding: "5px 12px", fontSize: 12 }}
+              >
+                Refresh
+              </button>
+            </div>
           </div>
 
           {monitorLoading ? (
@@ -511,6 +759,59 @@ export default function SettingsPage() {
           ) : (
             <p style={{ fontSize: 13, color: "var(--text-muted)" }}>Unable to load monitoring status.</p>
           )}
+        </div>
+
+        {/* Audit Log */}
+        <AuditLogSection />
+
+        {/* Keyboard Shortcuts */}
+        <div style={cardStyle}>
+          <SectionHeader
+            icon={
+              <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5M7.188 2.239l.777 2.897M5.136 7.965l-2.898-.777M13.95 4.05l-2.122 2.122m-5.657 5.656l-2.12 2.122" />
+              </svg>
+            }
+            title="Keyboard Shortcuts"
+            subtitle="Quick navigation with keyboard"
+            iconColor="var(--sapphire)"
+          />
+          <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
+            {[
+              { keys: "Ctrl + 1", action: "Policy Advisor" },
+              { keys: "Ctrl + 2", action: "Policy Generator" },
+              { keys: "Ctrl + 3", action: "Security Settings" },
+              { keys: "Escape", action: "Clear input focus" },
+            ].map(({ keys, action }) => (
+              <div
+                key={keys}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "7px 12px",
+                  background: "var(--bg-surface-2)",
+                  borderRadius: 7,
+                  border: "1px solid var(--border)",
+                }}
+              >
+                <span style={{ fontSize: 12.5, color: "var(--text-secondary)" }}>{action}</span>
+                <kbd
+                  style={{
+                    fontSize: 11,
+                    fontFamily: "var(--font-mono)",
+                    padding: "2px 8px",
+                    borderRadius: 5,
+                    background: "var(--bg-surface-3)",
+                    border: "1px solid var(--border)",
+                    color: "var(--text-muted)",
+                  }}
+                >
+                  {keys}
+                </kbd>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     </div>

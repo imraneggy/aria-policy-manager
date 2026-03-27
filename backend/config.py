@@ -16,7 +16,7 @@ class Settings(BaseSettings):
 
     # ── Ollama ────────────────────────────────────────────────────────────────
     OLLAMA_BASE_URL: str = "http://localhost:11434"
-    OLLAMA_MODEL: str = "llama3.2:1b"
+    OLLAMA_MODEL: str = "llama3.2:1b-4k"
     OLLAMA_EMBEDDING_MODEL: str = "nomic-embed-text"
 
     # ── Paths ─────────────────────────────────────────────────────────────────

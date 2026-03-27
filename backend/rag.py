@@ -1,22 +1,41 @@
+"""
+rag.py — ChromaDB vector store and PDF ingestion.
+
+All heavy imports (langchain, chromadb) are deferred to function calls
+so the main app starts instantly even if these libraries are slow to load.
+"""
+
 import os
 import logging
-from langchain_community.document_loaders import PyPDFLoader
-from langchain_text_splitters import RecursiveCharacterTextSplitter
-from langchain_community.vectorstores import Chroma
-from langchain_community.embeddings import OllamaEmbeddings
 from .config import settings
 
 logger = logging.getLogger(__name__)
 
 CHROMA_PERSIST_DIR = os.path.join(os.path.dirname(__file__), "chroma_db")
 
-# Lazy-initialised to avoid crashing at import time if Ollama isn't running
 _embeddings = None
+_Chroma = None
 
 
-def get_embeddings() -> OllamaEmbeddings:
+def _get_chroma_class():
+    global _Chroma
+    if _Chroma is None:
+        try:
+            from langchain_chroma import Chroma
+            _Chroma = Chroma
+        except ImportError:
+            from langchain_community.vectorstores import Chroma
+            _Chroma = Chroma
+    return _Chroma
+
+
+def get_embeddings():
     global _embeddings
     if _embeddings is None:
+        try:
+            from langchain_ollama import OllamaEmbeddings
+        except ImportError:
+            from langchain_community.embeddings import OllamaEmbeddings
         _embeddings = OllamaEmbeddings(
             model=settings.OLLAMA_EMBEDDING_MODEL,
             base_url=settings.OLLAMA_BASE_URL,
@@ -24,7 +43,8 @@ def get_embeddings() -> OllamaEmbeddings:
     return _embeddings
 
 
-def get_vector_store() -> Chroma:
+def get_vector_store():
+    Chroma = _get_chroma_class()
     return Chroma(
         persist_directory=CHROMA_PERSIST_DIR,
         embedding_function=get_embeddings(),
@@ -36,6 +56,9 @@ def ingest_documents() -> int:
     Ingests all PDF documents from POLICY_DOCS_DIR into ChromaDB.
     Returns the number of chunks embedded.
     """
+    from langchain_community.document_loaders import PyPDFLoader
+    from langchain_text_splitters import RecursiveCharacterTextSplitter
+
     docs_dir = settings.POLICY_DOCS_DIR
     documents = []
 
@@ -62,7 +85,7 @@ def ingest_documents() -> int:
     chunks = splitter.split_documents(documents)
     logger.info(f"Generated {len(chunks)} chunks from {len(documents)} pages")
 
-    # Chroma auto-persists in v0.4+; .persist() was removed in v0.5
+    Chroma = _get_chroma_class()
     Chroma.from_documents(
         documents=chunks,
         embedding=get_embeddings(),

@@ -1,9 +1,14 @@
 /**
  * api.ts — Fetch wrapper and SSE streaming utility.
- * All API calls go through /api/... (proxied to backend via next.config.ts rewrites).
+ * Non-streaming API calls go through /api/... (proxied via next.config.ts rewrites).
+ * SSE streaming calls go directly to the backend to avoid Turbopack proxy buffering.
  */
 
 const TOKEN_KEY = "token";
+
+/** Backend URL for direct SSE calls (bypasses Next.js proxy which buffers streams). */
+const BACKEND_URL =
+  process.env.NEXT_PUBLIC_BACKEND_URL || "http://localhost:8000";
 
 export function getToken(): string | null {
   if (typeof window === "undefined") return null;
@@ -84,7 +89,10 @@ export async function streamSSE(
       headers["Authorization"] = `Bearer ${token}`;
     }
 
-    const response = await fetch(url, {
+    // Call backend directly to avoid Next.js proxy buffering SSE chunks
+    const directUrl = url.startsWith("/") ? `${BACKEND_URL}${url}` : url;
+
+    const response = await fetch(directUrl, {
       method: "POST",
       headers,
       body: JSON.stringify(body),
@@ -153,4 +161,33 @@ export async function streamSSE(
     const message = err instanceof Error ? err.message : String(err);
     onError(message);
   }
+}
+
+/**
+ * Upload a file with multipart/form-data via authenticated request.
+ */
+export async function apiUpload(
+  path: string,
+  formData: FormData,
+): Promise<Response> {
+  const token = getToken();
+  const headers: Record<string, string> = {};
+  if (token) {
+    headers["Authorization"] = `Bearer ${token}`;
+  }
+  // Do NOT set Content-Type — browser sets it with boundary for multipart
+  const response = await fetch(path, {
+    method: "POST",
+    headers,
+    body: formData,
+  });
+
+  if (response.status === 401) {
+    clearToken();
+    if (typeof window !== "undefined") {
+      window.location.href = "/";
+    }
+  }
+
+  return response;
 }
